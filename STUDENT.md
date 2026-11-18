@@ -5,7 +5,7 @@
 - Lớp (L2 / L3 / khác): L2b
 - Tài khoản GitHub: lucpd16
 - Repo bài nộp (URL): https://github.com/lucpd16/K5-L23-DAY08-2A202603287-PhamDinhLuc-AIPrelabel
-- Commit chốt bài (hash): 1ff36fcdf4249c2b577b2b410fb60b6a85779abc
+- Commit chốt bài (hash): 64c1f05c3b53645905262516d687844152ef38c3
 - Máy: Windows 11 (Local chạy script & CVAT Docker venv) + Google Colab Pro (GPU L4/G4/A100)
 - CVAT (Docker): v2.81.0
 
