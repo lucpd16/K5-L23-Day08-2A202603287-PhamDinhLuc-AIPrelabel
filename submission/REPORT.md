@@ -1,4 +1,4 @@
-# Báo cáo Day 08 — 2A202603287 - Phạm Đình Lực
+# Day 08 Lab — 2A202603287 - Phạm Đình Lực
 
 > Toàn bộ số liệu trong báo cáo được tổng hợp trực tiếp từ các tệp kết quả tại `submission/qc/` (`threshold_sweep.md`, `review_stats.md`, `qc_report_auto.md`), `submission/model_log.csv` và `submission/time_log.csv`.
 
@@ -13,7 +13,7 @@
   ```powershell
   python scripts/merge_prelabels.py work/prelabel/yoloe_all/pre.coco.json work/prelabel/y26_all/pre.coco.json --thr "three_wheeler=0.15" --conf 0.3 --iou 0.6 --split "batch,gold" --out work/prelabel/merged_review/pre.coco.json
   ```
-- **Phiên bản SAM đã chọn:** `SAM 2.1 base` (`sam2.1_b.pt`, lượt `r04`) chạy trên GPU L4 của Google Colab Pro, có chạy thử thêm `MobileSAM` (`mobile_sam.pt`) để so sánh. Tôi chọn `sam2.1_b.pt` vì chạy trên L4 rất nhanh (~0.45 giây/ảnh), không làm nặng máy tính ở nhà và cắt viền mấy phần hở như mái che hay bánh xe tuk-tuk mượt hơn bản nhẹ `mobile_sam.pt`.
+- **Phiên bản SAM đã chọn:** `SAM 2.1 base` (`sam2.1_b.pt`, lượt `r04`) chạy trên GPU L4/G4/A100 của Google Colab Pro, có chạy thử thêm `MobileSAM` (`mobile_sam.pt`) để so sánh. Tôi chọn `sam2.1_b.pt` vì chạy trên L4/G4/A100 rất nhanh (~0.45 giây/ảnh), không làm nặng máy tính ở nhà và cắt viền mấy phần hở như mái che hay bánh xe tuk-tuk mượt hơn bản nhẹ `mobile_sam.pt`.
 - **Lỗi không sửa được bằng đổi ngưỡng:** Lỗi **nhận nhầm bản chất vật thể** — ví dụ `YOLO26m` không có nhãn `three_wheeler` nên cứ gặp tuk-tuk là gán thành `car` hoặc `truck`; còn `YOLOE-26s` thì hay nhận nhầm xe buýt hoặc tấm bạt che sạp hàng thành `three_wheeler`. Những lỗi này có tăng hay giảm `--conf` cũng không hết, buộc phải xếp `yoloe_all` ưu tiên trước `y26_all` lúc gộp (`--iou 0.6`) rồi tự tay vào CVAT xóa và sửa lại.
 - **Box điểm cao mà sai / điểm thấp mà đúng:**
   - *Điểm cao mà sai:* Ở `img_002.jpg` và `img_013.jpg`, `YOLOE-26s` bắt nhầm xe bán tải và tấm bạt sạp hàng thành `three_wheeler` với điểm khá cao (`> 0.35`), hoặc vẽ 1 khung to đùng bao cả 2 chiếc tuk-tuk đứng cạnh nhau.
@@ -67,7 +67,7 @@
 | `img_002.jpg` | `sam2.1_b.pt` | 2 (`1 pos, 1 neg`) | Không | Ôm sát phần đầu và thân xe tuk-tuk xanh, tách được người lái ra ngoài. | `tuktuk_img002_sam2.jpg` |
 
 - **Đối chiếu guideline mục 4.2:** Quy tắc *bỏ qua lỗ thủng nhỏ hơn 5% diện tích* và *tách riêng người lái khỏi xe* (mục 4.2.2 & 4.2.4) giúp tôi đặt điểm `--pos`/`--neg` gọn hơn, không phải chấm chi chít vào mấy khe nan sắt nhỏ. Có điều guideline v1.0 chưa nói rõ cách xử lý các thanh khung mái che quá mảnh dễ bị SAM cắt đứt đoạn.
-- **Interactor SAM trong CVAT vs chạy offline:** Tôi không bật AI Interactor trực tiếp trên CVAT để tránh nặng máy khi đang chạy Docker và giữ đúng quy tắc không dùng AI ở Part 1; chạy `sam2_points.py` trên Colab GPU L4 giúp lưu lại đúng tọa độ click và dễ so sánh trực tiếp giữa `sam2.1_b.pt` với `mobile_sam.pt`.
+- **Interactor SAM trong CVAT vs chạy offline:** Tôi không bật AI Interactor trực tiếp trên CVAT để tránh nặng máy khi đang chạy Docker và giữ đúng quy tắc không dùng AI ở Part 1; chạy `sam2_points.py` trên Colab GPU L4/G4/A100 giúp lưu lại đúng tọa độ click và dễ so sánh trực tiếp giữa `sam2.1_b.pt` với `mobile_sam.pt`.
 
 ## 6. Calibration (Part 6)
 
@@ -95,11 +95,11 @@
 
 ## 8. Ghi chú cá nhân
 
-- **Dùng AI để làm bài:** Tôi có dùng AI để hỏi cách chạy từng pha của bài lab, nhờ gỡ lỗi database PostgreSQL của CVAT `v2.81.0` và hỗ trợ sắp xếp lại câu chữ cho báo cáo mạch lạc hơn; còn toàn bộ việc gán tay 4 ảnh gold, sửa 24 ảnh batch trên CVAT, chạy inference trên Colab L4 và soi lỗi QC đều do tôi tự làm và kiểm tra thực tế.
+- **Dùng AI để làm bài:** Tôi có dùng AI để hỏi cách chạy từng pha của bài lab, nhờ gỡ lỗi database PostgreSQL của CVAT `v2.81.0` và hỗ trợ sắp xếp lại câu chữ cho báo cáo mạch lạc hơn; còn toàn bộ việc gán tay 4 ảnh gold, sửa 24 ảnh batch trên CVAT, chạy inference trên Colab L4/G4/A100 và soi lỗi QC đều do tôi tự làm và kiểm tra thực tế.
 - **Gold có bị nhiễm không:** **Không.** Tôi gán tay xong xuôi 4 ảnh `gold_manual.json` trước khi chạy bất kỳ lệnh AI nào và không dùng AI Interactor trong CVAT.
 - **Máy / GPU / CVAT dùng; vướng mắc cài đặt:**
-  - *Cấu hình:* Máy cá nhân chạy Windows 11 (PowerShell) để chạy script local và Docker CVAT `v2.81.0` (`http://localhost:8080`), kết hợp Google Colab Pro dùng **GPU L4/G4** để chạy `YOLO26m`, `YOLOE-26s` và `SAM 2.1`.
+  - *Cấu hình:* Máy cá nhân chạy Windows 11 (PowerShell) để chạy script local và Docker CVAT `v2.81.0` (`http://localhost:8080`), kết hợp Google Colab Pro dùng **GPU L4/G4/A100** để chạy `YOLO26m`, `YOLOE-26s` và `SAM 2.1`.
   - *Vướng mắc cài đặt:* Lúc đầu tạo Project trên CVAT `v2.81.0` bị dính lỗi `Server Error (500)` (`column "iou_threshold" is of type jsonb`) và Bad Gate Way 1 lúc. Kiểm tra log container thì thấy lỗi lệch kiểu dữ liệu trong PostgreSQL nên tooi đã chạy lệnh `ALTER TABLE` trực tiếp trong `cvat_db` để ép cột `iou_threshold` sang `double precision` thì tạo project bình thường.
-- **Dùng cache `data/cache/` thay vì tự chạy?** **Không.** Tôi tự chạy toàn bộ model pre-label và tách mask SAM trên GPU L4/G4 của Colab Pro.
+- **Dùng cache `data/cache/` thay vì tự chạy?** **Không.** Tôi tự chạy toàn bộ model pre-label và tách mask SAM trên GPU L4/G4/A100 của Colab Pro.
 - **Lỗi / bug script đã gặp:** Lúc chạy `sam2_points.py` trên `img_017.jpg` bị báo `FileNotFoundError` do lệch tọa độ mẫu nên tôi đã đổi sang `img_002.jpg` để xuất đủ ảnh mask; ngoài ra lúc đầu điền thiếu 3 dòng trong `qc_review.csv` nên `qc_report.py` báo cảnh báo, sau đó tôi đã soi nốt cả 5 ảnh mẫu và chạy lại báo cáo đầy đủ.
 - **Một điều sẽ làm khác lần sau:** Với những ảnh đông xe máy và người đi bộ đan xen nhau, tôi sẽ phóng to từng góc ảnh để rà thêm một lượt cuối cùng trước khi export, tránh để lặp lại lỗi `bo_sot` như đợt kiểm QC này.

@@ -10,7 +10,7 @@
 | 1 | Xe đạp điện / xe máy điện nhỏ: `bicycle` hay `motorbike`? | Xếp vào `motorbike` nếu có tay ga, yên liền dày hoặc không có bàn đạp cơ học; chỉ xếp `bicycle` khi có bàn đạp đạp chân rõ ràng. | `img_005.jpg` | `CAL-01` |
 | 2 | Khối xe máy đỗ dày đặc gần camera: từng xe hay `ignore_region`? | Các xe ở gần camera (chiều cao ≥ 20 px) vẫn gán từng box `motorbike` độc lập nếu phân biệt được yên/tay lái; chỉ dùng `ignore_region` cho cụm ≥ 5 xe dính chùm ở xa (< 20 px). | `img_021.jpg` | `CAL-04` |
 | 3 | Hàng nhô ra trên xe đạp / ba gác: box xe có gồm hàng không? | Giữ quy tắc mục 4.1.5: chỉ tính vào box xe nếu phần hàng nhô ra ≤ 20% chiều dài xe; nếu nhô xa hơn thì box xe chỉ ôm phần khung phương tiện. | `img_021.jpg` | `CAL-04` |
-| 4–7 | Các câu hỏi mở còn lại (người ngồi trong mui kín, kính chắn gió, box đêm, ngưỡng tin cậy tối thiểu) | Chưa chốt cứng ở v1.1 do bộ 24 ảnh batch chủ yếu là cảnh ban ngày và ít ca kính xe trong suốt; giữ nguyên quy tắc `can_review` ở v1.0 để đánh giá thêm ở lô dữ liệu sau. | — | — |
+| 4 | Các câu hỏi mở còn lại (người ngồi trong mui kín, kính chắn gió, box đêm, ngưỡng tin cậy tối thiểu) | Chưa chốt cứng ở v1.1 do bộ 24 ảnh batch chủ yếu là cảnh ban ngày và ít ca kính xe trong suốt; giữ nguyên quy tắc `can_review` ở v1.0 để đánh giá thêm ở lô dữ liệu sau. | `img_017.jpg` | `CAL-04` |
 
 ## 2. Ca khó mới (từ lỗi của máy, bẫy lọt, box `can_review`)
 

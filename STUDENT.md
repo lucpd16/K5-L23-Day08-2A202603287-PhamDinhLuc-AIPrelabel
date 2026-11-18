@@ -6,7 +6,7 @@
 - Tài khoản GitHub: lucpd16
 - Repo bài nộp (URL): https://github.com/lucpd16/K5-L23-DAY08-2A202603287-PhamDinhLuc-AIPrelabel
 - Commit chốt bài (hash): 1ff36fcdf4249c2b577b2b410fb60b6a85779abc
-- Máy: Windows 11 (Local chạy script & CVAT Docker venv) + Google Colab Pro (GPU L4/G4)
+- Máy: Windows 11 (Local chạy script & CVAT Docker venv) + Google Colab Pro (GPU L4/G4/A100)
 - CVAT (Docker): v2.81.0
 
 ## Kết quả tóm tắt (điền cuối bài; số lấy từ `submission/qc/*`, kèm mẫu số)
