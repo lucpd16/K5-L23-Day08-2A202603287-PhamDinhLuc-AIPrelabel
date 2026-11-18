@@ -1,1 +1,5 @@
-run_id,part,model,params,split,n_boxes,sec_per_img,what_went_right,what_went_wrong,decision
+run_id,model,size_or_variant,split,conf,classes,n_images,n_boxes,sec_per_img,what_went_right,what_went_wrong,decision
+r01,yolo26,yolo26m.pt,pilot,0.25,all_coco,8,142,0.12,"Bắt tốt người đi bộ, xe máy và ô tô con ở tiền cảnh trên GPU Colab","Bỏ sót hoàn toàn xe ba bánh tuk-tuk do không có trong 80 lớp COCO; nhiều box nền nhiễu",Giữ làm nền cho lớp phổ biến, tìm model bổ trợ cho three_wheeler
+r02,yolo26,yolo26m.pt,pilot,0.50,all_coco,8,89,0.11,"Giảm mạnh các box giả ở nền xa so với mức conf 0.25","Bỏ sót nhiều người đi bộ nhỏ và xe máy bị che khuất một phần; vẫn không bắt được tuk-tuk",Không dùng một ngưỡng chung 0.5 cho toàn bộ các lớp
+r03,yoloe,yoloe-26s-seg.pt,pilot,0.25,three_wheeler,8,24,0.18,"Phát hiện được xe tuk-tuk và xích lô theo prompt chữ three_wheeler","Đôi khi vẽ box rộng hoặc nhận nhầm xe bán tải/tấm bạt che sạp hàng thành three_wheeler",Dùng làm model bổ trợ và quét ngưỡng riêng trên tập gold (chốt 0.15)
+r04,yolo26+sam,yolo26m.pt+sam2.1_b.pt,pilot,0.30,"person,motorbike,car",2,38,0.85,"SAM 2.1 cắt đường viền mask ôm sát thân xe và bánh xe hơn hẳn bounding box","Box đầu vào từ YOLO26 vẫn gán nhầm tuk-tuk thành car; chạy chậm hơn detector thuần",Chỉ dùng SAM cho 3 ca khó ở Part 5 trên Colab GPU

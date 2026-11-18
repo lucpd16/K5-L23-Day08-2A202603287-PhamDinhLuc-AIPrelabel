@@ -50,7 +50,7 @@
 
 ## 4. Máy có đáng dùng không?
 
-- **Thời gian thực hiện (từ `time_log.csv`):** Gán tay 4 ảnh gold mất **5.50 phút/ảnh** (`22.0` phút / 4 ảnh), còn duyệt 24 ảnh batch có pre-label mất **2.83 phút/ảnh** (`68.0` phút / 24 ảnh). Tuy nhiên tốc độ nhanh hơn này có một phần là do tôi làm 4 ảnh gold trước nên đã quen phím tắt CVAT và nhớ quy tắc gán hơn.
+- **Thời gian thực hiện (từ `time_log.csv`):** Gán tay 4 ảnh gold mất **4.50 phút/ảnh** (`18.0` phút / 4 ảnh), còn duyệt 24 ảnh batch có pre-label mất **2.50 phút/ảnh** (`60.0` phút / 24 ảnh). Tuy nhiên tốc độ nhanh hơn này có một phần là do tôi làm 4 ảnh gold trước nên đã quen phím tắt CVAT và nhớ quy tắc gán hơn.
 - **Kết luận:** **Có đáng dùng**, nhất là với các lớp phổ biến như `person`, `motorbike`, `car`, `bus`, `truck`. Giữ lại được gần `60%` box có sẵn giúp đỡ mỏi tay hơn hẳn khi gặp những ảnh đường phố đông nghẹt xe. Riêng lớp `three_wheeler` thì model hiện tại bắt nhiễu quá nhiều, công ngồi xóa box thừa gần bằng vẽ tay mới.
 - **Ba quy tắc tự đặt ra để đỡ phụ thuộc vào máy:**
   1. **Bấm nút con mắt ẩn hết nhãn AI trong vài giây đầu** mỗi khi mở ảnh mới để tự nhìn bằng mắt xem có bao nhiêu người và xe trước.
@@ -98,8 +98,8 @@
 - **Dùng AI để làm bài:** Tôi có dùng AI để hỏi cách chạy từng pha của bài lab, nhờ gỡ lỗi database PostgreSQL của CVAT `v2.81.0` và hỗ trợ sắp xếp lại câu chữ cho báo cáo mạch lạc hơn; còn toàn bộ việc gán tay 4 ảnh gold, sửa 24 ảnh batch trên CVAT, chạy inference trên Colab L4 và soi lỗi QC đều do tôi tự làm và kiểm tra thực tế.
 - **Gold có bị nhiễm không:** **Không.** Tôi gán tay xong xuôi 4 ảnh `gold_manual.json` trước khi chạy bất kỳ lệnh AI nào và không dùng AI Interactor trong CVAT.
 - **Máy / GPU / CVAT dùng; vướng mắc cài đặt:**
-  - *Cấu hình:* Máy cá nhân chạy Windows 11 (PowerShell) để chạy script local và Docker CVAT `v2.81.0` (`http://localhost:8080`), kết hợp Google Colab Pro dùng **GPU L4** để chạy `YOLO26m`, `YOLOE-26s` và `SAM 2.1`.
-  - *Vướng mắc cài đặt:* Lúc đầu tạo Project trên CVAT `v2.81.0` bị dính lỗi `Server Error (500)` (`column "iou_threshold" is of type jsonb`). Kiểm tra log container thì thấy lỗi lệch kiểu dữ liệu trong PostgreSQL nên tôi đã chạy lệnh `ALTER TABLE` trực tiếp trong `cvat_db` để ép cột `iou_threshold` sang `double precision` thì tạo project bình thường.
-- **Dùng cache `data/cache/` thay vì tự chạy?** **Không.** Tôi tự chạy toàn bộ model pre-label và tách mask SAM trên GPU L4 của Colab Pro.
+  - *Cấu hình:* Máy cá nhân chạy Windows 11 (PowerShell) để chạy script local và Docker CVAT `v2.81.0` (`http://localhost:8080`), kết hợp Google Colab Pro dùng **GPU L4/G4** để chạy `YOLO26m`, `YOLOE-26s` và `SAM 2.1`.
+  - *Vướng mắc cài đặt:* Lúc đầu tạo Project trên CVAT `v2.81.0` bị dính lỗi `Server Error (500)` (`column "iou_threshold" is of type jsonb`) và Bad Gate Way 1 lúc. Kiểm tra log container thì thấy lỗi lệch kiểu dữ liệu trong PostgreSQL nên tooi đã chạy lệnh `ALTER TABLE` trực tiếp trong `cvat_db` để ép cột `iou_threshold` sang `double precision` thì tạo project bình thường.
+- **Dùng cache `data/cache/` thay vì tự chạy?** **Không.** Tôi tự chạy toàn bộ model pre-label và tách mask SAM trên GPU L4/G4 của Colab Pro.
 - **Lỗi / bug script đã gặp:** Lúc chạy `sam2_points.py` trên `img_017.jpg` bị báo `FileNotFoundError` do lệch tọa độ mẫu nên tôi đã đổi sang `img_002.jpg` để xuất đủ ảnh mask; ngoài ra lúc đầu điền thiếu 3 dòng trong `qc_review.csv` nên `qc_report.py` báo cảnh báo, sau đó tôi đã soi nốt cả 5 ảnh mẫu và chạy lại báo cáo đầy đủ.
 - **Một điều sẽ làm khác lần sau:** Với những ảnh đông xe máy và người đi bộ đan xen nhau, tôi sẽ phóng to từng góc ảnh để rà thêm một lượt cuối cùng trước khi export, tránh để lặp lại lỗi `bo_sot` như đợt kiểm QC này.
